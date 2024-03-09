@@ -12,21 +12,8 @@ interface ShopProps {
   isLoading: boolean
 }
 
-const handleGenerateLayout = async (props) => {
-  try {
-    props.setProducts((prevProducts) => [...prevProducts, props.testProduct])
-  } catch (error) {
-    console.error('Error:', error)
-  }
-}
-
 const Shop: React.FC<ShopProps> = (props) => {
   const [itemName, setItemName] = useState('New Item')
-
-  const handleItemNameChange = (e) => {
-    const newName = e.target.innerText
-    setItemName(newName)
-  }
 
   console.log(props.products)
   return (
@@ -34,11 +21,11 @@ const Shop: React.FC<ShopProps> = (props) => {
       <div className="pt-5 flex items-center justify-center flex flex-col ">
         <Button
           className="shadow-xl mx-auto"
-          onClick={async () => {
-            await handleGenerateLayout(props)
+          onClick={() => {
+            handleGPTReview
           }}
         >
-          Generate New Layout{' '}
+          Review
         </Button>
         <div className="flex flex-col my-2 overflow-x-hidden">
           {props.products.map((product, index) => (
