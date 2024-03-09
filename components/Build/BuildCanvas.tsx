@@ -300,7 +300,12 @@ const BuildCanvas: React.FC<BuildCanvasProps> = (props) => {
         </div>
       }
       <div className="absolute top-4 right-4 z-20 flex flex-row items-center gap-2">
-        <Button onClick={screenshot}>Screenshot</Button>
+        <Button           
+          variant={'outline'}
+          size={'sm'}
+          onClick={screenshot}>
+            Screenshot
+        </Button>
         <Button
           // onMouseOver={(e) => {
           //     e.preventDefault();
