@@ -304,7 +304,7 @@ const BuildCanvas: React.FC<BuildCanvasProps> = (props) => {
           variant={'outline'}
           size={'sm'}
           onClick={screenshot}>
-            Screenshot
+            Save as PNG
         </Button>
         <Button
           // onMouseOver={(e) => {
