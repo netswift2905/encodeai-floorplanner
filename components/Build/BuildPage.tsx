@@ -37,20 +37,19 @@ export const BuildPage: React.FC<{
   const [inputUrl, setInputUrl] = React.useState<string>('')
   const [products, setProducts] = React.useState<IFrontEndProduct[]>([])
   const [stageItems, setStageItems] = React.useState([])
-  const [budget,setBudget]=React.useState(0)
+  const [budget, setBudget] = React.useState(0)
   const updateFloorPlans = async () => {
     const data = await getFloorPlans(supabase, user)
     setFloorPlans(data)
   }
-  const [isLoading, setIsLoading] = React.useState(false);
-
+  const [isLoading, setIsLoading] = React.useState(false)
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputUrl(event.target.value)
   }
 
   const handleAddProduct = async (input: string) => {
-    setIsLoading(true);
+    setIsLoading(true)
     // url validation logic
     if (input !== null && input.trim() !== '') {
       setInputUrl('')
@@ -83,12 +82,12 @@ export const BuildPage: React.FC<{
       } catch (error) {
         console.error('Error:', error)
       } finally {
-        setIsLoading(false); // Set loading state back to false
+        setIsLoading(false) // Set loading state back to false
       }
     } else {
       // User canceled or entered an empty URL
       alert('You did not enter a valid URL.')
-    } 
+    }
   }
 
   React.useEffect(() => {
@@ -116,21 +115,30 @@ export const BuildPage: React.FC<{
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     setBudget(budget + shapeProperties.price)
   }
-  React.useEffect(()=>{
-    let newBudget=0
+  React.useEffect(() => {
+    let newBudget = 0
     for (const item of stageItems) {
       // Ensure that item has the product attribute
-      if (item.product && typeof item.product === 'object' && 'price' in item.product) {
-        newBudget += item.product.price || 0;
-      }}
+      if (
+        item.product &&
+        typeof item.product === 'object' &&
+        'price' in item.product
+      ) {
+        newBudget += item.product.price || 0
+      }
+    }
     setBudget(newBudget)
-  },[stageItems])
+  }, [stageItems])
 
   return (
     <div className="flex w-full h-full">
       <div className="flex w-full h-full relative">
-        BUDGET: {budget}
-        <Shop products={products} handleAddToStage={handleAddToStage} setProducts={setProducts} isLoading={isLoading}  />
+        <Shop
+          products={products}
+          handleAddToStage={handleAddToStage}
+          setProducts={setProducts}
+          isLoading={isLoading}
+        />
         <BuildTab
           updateFloorPlans={updateFloorPlans}
           setFloorPlan={setFloorPlan}
@@ -183,7 +191,8 @@ const BuildTab: React.FC<{
   activeFloorPlanId: string
   stageItems: []
   setStageItems: () => Promise<void>
-
+  budget: number
+  setBudget: (budget: number) => void
 }> = ({
   updateFloorPlans,
   setFloorPlan,
@@ -193,7 +202,8 @@ const BuildTab: React.FC<{
   activeFloorPlanId,
   stageItems,
   setStageItems,
-
+  budget,
+  setBudget,
 }) => {
   return (
     !(floorPlans.length === 0) && (
@@ -211,6 +221,7 @@ const BuildTab: React.FC<{
             updateFloorPlans={updateFloorPlans}
             stageItems={stageItems}
             setStageItems={setStageItems}
+            budget={budget}
           />
         </div>
       </div>

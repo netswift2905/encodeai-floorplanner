@@ -32,14 +32,14 @@ const Shop: React.FC<ShopProps> = (props) => {
   return (
     <div className="w-96 justify-center mx-5">
       <div className="pt-5 flex items-center justify-center flex flex-col ">
-        <Button
+        {/* <Button
           className="shadow-xl mx-auto"
           onClick={async () => {
             await handleGenerateLayout(props)
           }}
         >
           Generate New Layout{' '}
-        </Button>
+        </Button> */}
         <div className="flex flex-col my-2 overflow-x-hidden">
           {props.products.map((product, index) => (
             <div className="items-center my-2" key={index}>

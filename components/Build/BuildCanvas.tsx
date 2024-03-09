@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use client'
-
+import * as Popover from '@radix-ui/react-popover'
 import React, { useState, useRef, useEffect } from 'react'
-import { Stage, Layer, Circle, Line } from 'react-konva'
+import { Stage, Layer, Circle, Line, Group } from 'react-konva'
 import type Konva from 'konva'
 import { Button } from '../ui/button'
 import { ArrowCounterClockwise } from '@phosphor-icons/react/dist/csr/ArrowCounterClockwise'
@@ -14,13 +14,19 @@ import { getFloorPlan, updateFloorPlan } from '@/lib/supabase'
 import { Export } from '@phosphor-icons/react/dist/csr/Export'
 import { useRouter } from 'next/navigation'
 import { StageItem } from './Item'
+import { Html } from 'react-konva-utils'
+// import {
+//   Popover,
+//   PopoverContent,
+//   PopoverTrigger,
+// } from '@radix-ui/react-popover'
 
 interface BuildCanvasProps {
   activeFloorPlanId: string
   updateFloorPlans: () => Promise<void>
   stageItems: []
   setStageItems: (items: any[]) => void
-  budget :number
+  budget: number
 }
 
 const BuildCanvas: React.FC<BuildCanvasProps> = (props) => {
@@ -205,6 +211,7 @@ const BuildCanvas: React.FC<BuildCanvasProps> = (props) => {
         // You might want to return a default IFloorPlan object here
         return {}
       }
+      if (walls.length === 1) setMeterToPixel(null)
       return {
         ...oldFloorPlan,
         structure: {
@@ -221,91 +228,112 @@ const BuildCanvas: React.FC<BuildCanvasProps> = (props) => {
     router.push(`/f/${activeFloorPlanId}`)
   }
 
+  const screenshot = async () => {
+    try {
+      // Dynamically import html2canvas
+      const html2canvas = await import('html2canvas')
 
-    const screenshot = async () => {
-      try {
-        // Dynamically import html2canvas
-        const html2canvas = await import('html2canvas');
-    
-        // Now you can use html2canvas in your component
-        // Get the stage canvas element by ID
-        const stageCanvas = document.getElementById('yourStageId');
-    
-        if (stageCanvas) {
-          // Use html2canvas with the stage canvas element
-          html2canvas.default(stageCanvas).then(canvas => {
-            // Convert the canvas to a data URL (PNG format)
-            const dataUrl = canvas.toDataURL('image/png');
-    
-            // Create a link element to download the image
-            const downloadLink = document.createElement('a');
-            downloadLink.href = dataUrl;
-            downloadLink.download = 'canvas_image.png';
-    
-            // Trigger a click event on the link to initiate the download
-            downloadLink.click();
-          });
-        } else {
-          console.error('Stage canvas element not found.');
-        }
-      } catch (error) {
-        console.error('Error loading html2canvas:', error);
+      // Now you can use html2canvas in your component
+      // Get the stage canvas element by ID
+      const stageCanvas = document.getElementById('yourStageId')
+
+      if (stageCanvas) {
+        // Use html2canvas with the stage canvas element
+        html2canvas.default(stageCanvas).then((canvas) => {
+          // Convert the canvas to a data URL (PNG format)
+          const dataUrl = canvas.toDataURL('image/png')
+
+          // Create a link element to download the image
+          const downloadLink = document.createElement('a')
+          downloadLink.href = dataUrl
+          downloadLink.download = 'canvas_image.png'
+
+          // Trigger a click event on the link to initiate the download
+          downloadLink.click()
+        })
+      } else {
+        console.error('Stage canvas element not found.')
       }
-    };
-  
+    } catch (error) {
+      console.error('Error loading html2canvas:', error)
+    }
+  }
+
+  // const [scaleInputOpen, setScaleInputOpen] = useState(false)
+  const [meterToPixel, setMeterToPixel] = useState<number | null>(null) // 1 cm * scale = pixel
+
+  const createScale = (): void => {
+    if (walls.length === 0) return
+    const xDist = walls[0].end.x - walls[0].start.x
+    const yDist = walls[0].end.y - walls[0].start.y
+    const wallLengthInPixels = Math.sqrt(
+      Math.pow(xDist, 2) + Math.pow(yDist, 2)
+    )
+
+    const newMtoPixel =
+      wallLengthInPixels /
+      parseFloat(prompt('Enter the length of the red wall in meters') ?? '0')
+
+    setMeterToPixel(newMtoPixel)
+  }
 
   return (
     <div className="relative w-full h-full">
-      {
-        <div className="absolute top-4 left-4 z-20 max-w-[200px] overflow-hidden overflow-ellipsis whitespace-nowrap">
-          {!isEditing ? (
-            <div className="flex flex-row items-center gap-2">
-              <Label className="max-w-[150px] overflow-hidden">
-                {currentFloorPlanState?.name}
-              </Label>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-7 w-7"
-                // color="black"
-                onClick={() => {
-                  setIsEditing(true)
-                }}
-              >
-                <Pen size={16} />
-              </Button>
-            </div>
-          ) : (
-            <Input
-              autoFocus
-              className="bg-transparent cursor-pointer border-0 border-b rounded-none h-7"
-              autoComplete="off"
-              value={currentFloorPlanState?.name}
-              onChange={(e) => {
-                setCurrentFloorPlanState({
-                  ...currentFloorPlanState,
-                  name: e.target.value.slice(0, 20),
-                })
+      <div className="absolute top-4 left-4 z-20 max-w-[200px] overflow-hidden overflow-ellipsis whitespace-nowrap">
+        {!isEditing ? (
+          <div className="flex flex-row items-center gap-2">
+            <Label className="max-w-[150px] overflow-hidden">
+              {currentFloorPlanState?.name}
+            </Label>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-7 w-7"
+              // color="black"
+              onClick={() => {
+                setIsEditing(true)
               }}
-              onBlur={() => {
+            >
+              <Pen size={16} />
+            </Button>
+          </div>
+        ) : (
+          <Input
+            autoFocus
+            className="bg-transparent cursor-pointer border-0 border-b rounded-none h-7"
+            autoComplete="off"
+            value={currentFloorPlanState?.name}
+            onChange={(e) => {
+              setCurrentFloorPlanState({
+                ...currentFloorPlanState,
+                name: e.target.value.slice(0, 20),
+              })
+            }}
+            onBlur={() => {
+              setIsEditing(false)
+            }}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
                 setIsEditing(false)
-              }}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter') {
-                  setIsEditing(false)
-                }
-              }}
-              maxLength={20}
-            />
-          )}
-        </div>
-      }
+              }
+            }}
+            maxLength={20}
+          />
+        )}
+      </div>
+
       <div className="absolute top-4 right-4 z-20 flex flex-row items-center gap-2">
-        <Button           
-          variant={'outline'}
-          size={'sm'}
-          onClick={screenshot}>
-            Save as PNG
+        <div className="flex ">
+          {/* <Input
+            className="mr-3 w-[130px] text-sm"
+            placeholder="Length (cm)"
+          ></Input> */}
+          <Button variant={'outline'} size={'sm'} onClick={createScale}>
+            Set Scale
+          </Button>
+        </div>
+        <Button variant={'outline'} size={'sm'} onClick={screenshot}>
+          Save as PNG
         </Button>
         <Button
           // onMouseOver={(e) => {
@@ -330,6 +358,10 @@ const BuildCanvas: React.FC<BuildCanvasProps> = (props) => {
           <Export size={18} />
         </Button>
       </div>
+      <div className="absolute right-4 top-16 bg-white px-3 py-1 border rounded-sm flex items-center justify-center flex-col">
+        <p className="text-xs">Total</p>
+        <p className="font-bold">￡{props.budget} 🤑</p>
+      </div>
 
       <div
         ref={divRef}
@@ -345,7 +377,7 @@ const BuildCanvas: React.FC<BuildCanvasProps> = (props) => {
         }}
       />
       <Stage
-        id="yourStageId" 
+        id="yourStageId"
         width={canvasDimensions.width}
         height={canvasDimensions.height - 2}
         onMouseDown={handleCanvasMouseDown}
@@ -366,13 +398,11 @@ const BuildCanvas: React.FC<BuildCanvasProps> = (props) => {
           )}
           {walls.map((wall, index) => {
             return (
-              <Line
+              <RenderWall
+                wall={wall}
                 key={index}
-                points={[wall.start.x, wall.start.y, wall.end.x, wall.end.y]}
-                stroke="#222"
-                lineCap="round"
-                // dash={[10, 10]}
-                strokeWidth={8}
+                index={index}
+                meterToPixel={meterToPixel}
               />
             )
 
@@ -382,7 +412,7 @@ const BuildCanvas: React.FC<BuildCanvasProps> = (props) => {
             if (shape.type === 'item') {
               return (
                 <StageItem
-                  scale={1}
+                  scale={meterToPixel ? 100 / meterToPixel : 1}
                   key={index}
                   index={index}
                   handleRemoveStageItem={handleRemoveStageItem}
@@ -420,3 +450,59 @@ const BuildCanvas: React.FC<BuildCanvasProps> = (props) => {
 }
 
 export default BuildCanvas
+
+export const RenderWall = ({ index, wall, meterToPixel }: any) => {
+  const [popoverOpen, setPopoverOpen] = useState(false)
+  const getLengthInMeters = () => {
+    let x_dist = wall.end.x - wall.start.x
+    let y_dist = wall.end.y - wall.start.y
+    let wallLengthInPixels = Math.sqrt(
+      Math.pow(x_dist, 2) + Math.pow(y_dist, 2)
+    )
+
+    const res = wallLengthInPixels / meterToPixel
+    return Math.round(res * 100) / 100
+  }
+
+  return (
+    <>
+      <Group>
+        <Line
+          // key={index}
+          points={[wall.start.x, wall.start.y, wall.end.x, wall.end.y]}
+          stroke={meterToPixel === null && index === 0 ? 'red' : '#222'}
+          lineCap="round"
+          // dash={[10, 10]}
+          strokeWidth={8}
+        />
+        {meterToPixel && (
+          <Group
+            x={(wall.end.x + wall.start.x) / 2 + 8}
+            y={(wall.end.y + wall.start.y) / 2}
+          >
+            <Html
+              divProps={{
+                style: {
+                  pointerEvents: 'none',
+                },
+              }}
+            >
+              <div>{getLengthInMeters()}</div>
+            </Html>
+          </Group>
+        )}
+      </Group>
+    </>
+    // <Popover.Root open={true}>
+    //   <Popover.Trigger asChild>
+
+    //   </Popover.Trigger>
+    //   <Popover.Portal>
+    //     <Popover.Content
+    //       className="PopoverContent"
+    //       sideOffset={5}
+    //     ></Popover.Content>
+    //   </Popover.Portal>
+    // </Popover.Root>
+  )
+}
