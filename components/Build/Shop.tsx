@@ -1,6 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Item } from './Item'
 import { Button } from '@/components/ui/button'
+import { propagateServerField } from 'next/dist/server/lib/render-server'
+import { getObjects } from '@/lib/supabase'
+import { createClient } from '@/utils/supabase/client'
 
 interface ShopProps {
   products: any // Replace 'Product[]' with the actual type of your products
