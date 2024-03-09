@@ -26,7 +26,6 @@ For yarn:
 
 ```bash
 yarn
-yarn add html2canvas
 ```
 
 ### 4. Start the development server:
