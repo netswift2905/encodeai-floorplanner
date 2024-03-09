@@ -5,6 +5,7 @@ import { MagicWandIcon } from '@radix-ui/react-icons'
 import { propagateServerField } from 'next/dist/server/lib/render-server'
 import { getObjects } from '@/lib/supabase'
 import { createClient } from '@/utils/supabase/client'
+import Spinner from '../General/Spinner'
 
 interface ShopProps {
   products: any // Replace 'Product[]' with the actual type of your products
@@ -17,16 +18,19 @@ interface ShopProps {
 }
 
 const Shop: React.FC<ShopProps> = (props) => {
-  const [itemNames, setItemNames] = useState<string[]>(Array.from({ length: props.products.length }, () => 'New Item'));
+  const [itemNames, setItemNames] = useState<string[]>(
+    Array.from({ length: props.products.length }, () => 'New Item')
+  )
 
   const handleItemNameChange = (e, index) => {
-    const newName = e.target.innerText;
+    const newName = e.target.innerText
     setItemNames((prevNames) => {
-      const newNames = [...prevNames];
-      newNames[index] = newName;
-      return newNames;
-    });
-  };
+      const newNames = [...prevNames]
+      newNames[index] = newName
+      return newNames
+    })
+  }
+  const [reviewLoading, setReviewLoading] = useState(false)
   const handleGPTReview = async () => {
     try {
       // Dynamically import html2canvas
@@ -37,6 +41,7 @@ const Shop: React.FC<ShopProps> = (props) => {
       const stageCanvas = document.getElementById('yourStageId')
 
       if (stageCanvas) {
+        setReviewLoading(true)
         // Use html2canvas with the stage canvas element
         await html2canvas.default(stageCanvas).then(async (canvas) => {
           const dataUrl = canvas.toDataURL('image/png').split(';base64,')[1]
@@ -48,7 +53,10 @@ const Shop: React.FC<ShopProps> = (props) => {
             },
             body: JSON.stringify({ base64: dataUrl }),
           })
-          console.log(res)
+          let body = await res.json()
+          console.log(body)
+
+          setReviewLoading(false)
           // Convert the canvas to a data URL (PNG format)
           // const dataUrl = canvas.toDataURL('image/png')
           // // Create a link element to download the image
@@ -75,7 +83,7 @@ const Shop: React.FC<ShopProps> = (props) => {
             handleGPTReview()
           }}
         >
-          Review
+          {reviewLoading ? <Spinner /> : 'Review'}
           <MagicWandIcon className="ml-1" />
         </Button>
         <div className="flex flex-col my-2 overflow-x-hidden">
@@ -97,10 +105,10 @@ const Shop: React.FC<ShopProps> = (props) => {
                     className="text-center font-medium contenteditable"
                     contentEditable={true}
                     onBlur={(e) => {
-                        handleItemNameChange(e, index);
-                      }}
-                    >
-                      {itemNames[index]}
+                      handleItemNameChange(e, index)
+                    }}
+                  >
+                    {itemNames[index]}
                   </h5>
                   <p className="text-[#colorValue] text-xs font-light">
                     {product.currency} {product.price}
