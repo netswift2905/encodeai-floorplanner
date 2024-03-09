@@ -15,26 +15,13 @@ cd {{your-repo-name}}
 ```
 
 ### 3. Install dependencies:
-
-For npm:
-
-```bash
-npm install
-```
-
 For yarn:
 
 ```bash
-yarn
+yarn install
 ```
 
 ### 4. Start the development server:
-
-For npm:
-
-```bash
-npm run dev
-```
 
 For yarn:
 
