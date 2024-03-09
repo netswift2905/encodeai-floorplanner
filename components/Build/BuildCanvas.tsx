@@ -329,7 +329,7 @@ const BuildCanvas: React.FC<BuildCanvasProps> = (props) => {
       </div>
       <div className="absolute right-4 top-16 bg-white px-3 py-1 border rounded-sm flex items-center justify-center flex-col">
         <p className="text-xs">Total</p>
-        <p className="font-bold">￡{props.budget} 🤑</p>
+        <p className="font-bold">￡{props.budget} 💸</p>
       </div>
 
       <div
