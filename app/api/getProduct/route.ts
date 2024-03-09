@@ -1,8 +1,7 @@
 import getDetails from './usePuppeteer'
 import { NextResponse } from 'next/server'
 
-const isDummy = false
-const isDummy = false
+const isDummy = true
 
 export async function POST(req: Request) {
   const inputUrl: string = await req.json()
@@ -12,15 +11,16 @@ export async function POST(req: Request) {
     ? await getDetails(inputUrl)
     : {
         url: inputUrl,
-        object: 'bed',
+        object: 'sofa',
         colour: '#964B00',
         price: 449.99,
         currency: 'GBP',
         units: 'cm',
-        width: 700,
-        depth: 600,
+        width: 200,
+        depth: 140,
         additionalDetails: {
-          double: true,
+          mainSection: { numberOfSeatCushions: 3 },
+          right: { numberOfSeatCushions: 1, isChaise: true },
         },
       }
   // @ts-expect-error

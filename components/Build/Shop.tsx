@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Item } from './Item'
 import { Button } from '@/components/ui/button'
+import { MagicWandIcon } from '@radix-ui/react-icons'
 import { propagateServerField } from 'next/dist/server/lib/render-server'
 import { getObjects } from '@/lib/supabase'
 import { createClient } from '@/utils/supabase/client'
@@ -15,40 +16,60 @@ interface ShopProps {
   isLoading: boolean
 }
 
-const handleGenerateLayout = async (props) => {
-  try {
-    props.setProducts((prevProducts) => [...prevProducts, props.testProduct])
-  } catch (error) {
-    console.error('Error:', error)
-  }
-}
-
 const Shop: React.FC<ShopProps> = (props) => {
   const [itemName, setItemName] = useState('New Item')
 
-  const handleItemNameChange = (e) => {
-    const newName = e.target.innerText
-    setItemName(newName)
+  // console.log(props.products)
+
+  const handleGPTReview = async () => {
+    try {
+      // Dynamically import html2canvas
+      const html2canvas = await import('html2canvas')
+
+      // Now you can use html2canvas in your component
+      // Get the stage canvas element by ID
+      const stageCanvas = document.getElementById('yourStageId')
+
+      if (stageCanvas) {
+        // Use html2canvas with the stage canvas element
+        html2canvas.default(stageCanvas).then((canvas) => {
+          // Convert the canvas to a data URL (PNG format)
+          const dataUrl = canvas.toDataURL('image/png')
+
+          // Create a link element to download the image
+          const downloadLink = document.createElement('a')
+          downloadLink.href = dataUrl
+          downloadLink.download = 'canvas_image.png'
+
+          // Trigger a click event on the link to initiate the download
+          downloadLink.click()
+        })
+      } else {
+        console.error('Stage canvas element not found.')
+      }
+    } catch (error) {
+      console.error('Error loading html2canvas:', error)
+    }
   }
 
-  console.log(props.products)
   return (
     <div className="w-96 justify-center mx-5">
       <div className="pt-5 flex items-center justify-center flex flex-col ">
-        {/* <Button
+        <Button
           className="shadow-xl mx-auto"
-          onClick={async () => {
-            await handleGenerateLayout(props)
+          onClick={() => {
+            handleGPTReview()
           }}
         >
-          Generate New Layout{' '}
-        </Button> */}
+          Review
+          <MagicWandIcon className="ml-1" />
+        </Button>
         <div className="flex flex-col my-2 overflow-x-hidden">
           {props.products.map((product, index) => (
             <div className="items-center my-2" key={index}>
               <div className="rounded-lg border flex space-x-4 w-full items-center p-5">
                 <div
-                  className="max-w-[110px] max-h-[100px] overflow-x-hidden"
+                  className="w-[70px] max-h-[100px] overflow-x-hidden"
                   key={index}
                 >
                   <Item
@@ -61,9 +82,9 @@ const Shop: React.FC<ShopProps> = (props) => {
                   <h5
                     className="text-center font-medium "
                     // contentEditable={true}
-                    onBlur={(e) => {
-                      handleItemNameChange(e)
-                    }}
+                    // onBlur={(e) => {
+                    //   handleItemNameChange(e)
+                    // }}
                   >
                     {itemName}
                   </h5>
@@ -72,7 +93,7 @@ const Shop: React.FC<ShopProps> = (props) => {
                   </p>
                 </div>
                 <Button
-                  className="flex-col flex mx-auto"
+                  className="flex-col flex mx-auto outline"
                   onClick={(e) => {
                     props.handleAddToStage(e, 'item', product)
                   }}
