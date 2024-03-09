@@ -1,6 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Item } from './Item'
 import { Button } from '@/components/ui/button'
+import { propagateServerField } from 'next/dist/server/lib/render-server'
+import { getObjects } from '@/lib/supabase'
+import { createClient } from '@/utils/supabase/client'
 
 interface ShopProps {
   products: any // Replace 'Product[]' with the actual type of your products
@@ -19,14 +22,14 @@ const Shop: React.FC<ShopProps> = (props) => {
   return (
     <div className="w-96 justify-center mx-5">
       <div className="pt-5 flex items-center justify-center flex flex-col ">
-        <Button
+        {/* <Button
           className="shadow-xl mx-auto"
           onClick={() => {
             handleGPTReview
           }}
         >
-          Review
-        </Button>
+          Generate New Layout{' '}
+        </Button> */}
         <div className="flex flex-col my-2 overflow-x-hidden">
           {props.products.map((product, index) => (
             <div className="items-center my-2" key={index}>
