@@ -17,7 +17,6 @@ import { createObject } from '@/lib/supabase'
 import { getObjects } from '@/lib/supabase'
 import { forEach, initial } from 'lodash'
 
-
 // import { supabase } from "@/lib/supabaseClient";
 
 const DynamicCanvas = dynamic(
@@ -84,7 +83,7 @@ export const BuildPage: React.FC<{
         console.log(newProduct)
         // add to catalogue logic
         setProducts((prevProducts) => [...prevProducts, newProduct])
-        
+
         await createObject(supabase, user, {
           user_id: user.id,
           url: newProduct.url,
@@ -94,9 +93,8 @@ export const BuildPage: React.FC<{
           currency: newProduct.currency,
           width: newProduct.width,
           depth: newProduct.depth,
-          additional_details: newProduct.additional_details,
+          additional_details: newProduct.additionalDetails,
         })
-      
       } catch (error) {
         console.error('Error:', error)
       } finally {
@@ -126,16 +124,13 @@ export const BuildPage: React.FC<{
           currency: product.currency,
           width: product.width,
           depth: product.depth,
-          // additionalDetails: product.additional_details,
+          additionalDetails: product.additional_details,
         }
-        currentProducts.push(currentProduct);
-      });
+        currentProducts.push(currentProduct)
+      })
 
-      setProducts(currentProducts);
-
-
-    });
-
+      setProducts(currentProducts)
+    })
   }, [])
 
   const setFloorPlan = (index: number) => {
