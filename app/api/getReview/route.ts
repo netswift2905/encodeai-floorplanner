@@ -9,6 +9,7 @@ const openaiapiKey = process.env.OPENAI_API_KEY
 
 import formidable from 'formidable'
 import { get } from 'lodash'
+import { NextResponse } from 'next/server'
 
 export const config = {
   api: {
@@ -21,14 +22,10 @@ export async function POST(req: Request, res: Response): Promise<Response> {
 
   let base64 = body.base64
   let result = await getObject(base64)
+
   let toReturn = {
     response: result,
   }
-  //   console.log(result)
-  //   const formData = await req.formData()
-  //   const file = formData.get('floorplan')
-
-  //   console.log('File:', file)
   return Response.json(toReturn, { status: 200 })
 }
 
@@ -36,13 +33,13 @@ const getObject = async (base64: string) => {
   const openai = new OpenAI({
     apiKey: openaiapiKey,
   })
-  const inputmessages: ChatCompletionMessageParam[] = [
+  const inputMessages: ChatCompletionMessageParam[] = [
     {
       role: 'system',
       content: `
 You are an interior designer assistant. You will be given an image of a floorplan designed by a user, and your job is to give comments on how to improve the floorplan, as well as give a rating out of 10 on how well the floorplan is designed.\
 Provide your answer in a step by step approach, explaining what each aspect of the floorplan is and how it can be improved.\
-At the end, give a description of why the rating you gave is appropriate.`,
+At the end, give a description of why the rating you gave is appropriate. Limit your response to 1000 characters`,
     },
     {
       role: 'user',
@@ -58,18 +55,24 @@ At the end, give a description of why the rating you gave is appropriate.`,
     },
   ]
 
-  async function getOpenAIResponse(messages: ChatCompletionMessageParam[]) {
-    const response: ChatCompletion = await openai.chat.completions.create({
-      model: 'gpt-4-vision-preview',
-      max_tokens: 1000,
-      messages,
-    })
-    console.log(`getobject usage ${JSON.stringify(response.usage)}`)
-    console.log(response.choices[0].message.content)
-    return response.choices[0].message.content
-  }
+  //   async function getOpenAIResponse(messages: ChatCompletionMessageParam[]) {
 
-  const result = await getOpenAIResponse(inputmessages)
+  const response: any = await openai.chat.completions.create({
+    model: 'gpt-4-vision-preview',
+    max_tokens: 1000,
+    messages: inputMessages,
+    // stream: true,
+  })
+  return response.choices[0].message.content
 
-  return result
+  //   for await (const part of response) {
+  //     return part.choices[0].message.content
+  //   }
+  // console.log(`getobject usage ${JSON.stringify(response.usage)}`)
+  // console.log(response.choices[0].message.content)
+  // return response.choices[0].message.content
+
+  //   const result = await getOpenAIResponse(inputmessages)
+
+  //   return result
 }
