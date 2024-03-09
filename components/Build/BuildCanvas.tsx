@@ -220,6 +220,39 @@ const BuildCanvas: React.FC<BuildCanvasProps> = (props) => {
     router.push(`/f/${activeFloorPlanId}`)
   }
 
+
+    const screenshot = async () => {
+      try {
+        // Dynamically import html2canvas
+        const html2canvas = await import('html2canvas');
+    
+        // Now you can use html2canvas in your component
+        // Get the stage canvas element by ID
+        const stageCanvas = document.getElementById('yourStageId');
+    
+        if (stageCanvas) {
+          // Use html2canvas with the stage canvas element
+          html2canvas.default(stageCanvas).then(canvas => {
+            // Convert the canvas to a data URL (PNG format)
+            const dataUrl = canvas.toDataURL('image/png');
+    
+            // Create a link element to download the image
+            const downloadLink = document.createElement('a');
+            downloadLink.href = dataUrl;
+            downloadLink.download = 'canvas_image.png';
+    
+            // Trigger a click event on the link to initiate the download
+            downloadLink.click();
+          });
+        } else {
+          console.error('Stage canvas element not found.');
+        }
+      } catch (error) {
+        console.error('Error loading html2canvas:', error);
+      }
+    };
+  
+
   return (
     <div className="relative w-full h-full">
       {
@@ -267,6 +300,7 @@ const BuildCanvas: React.FC<BuildCanvasProps> = (props) => {
         </div>
       }
       <div className="absolute top-4 right-4 z-20 flex flex-row items-center gap-2">
+        <Button onClick={screenshot}>Screenshot</Button>
         <Button
           // onMouseOver={(e) => {
           //     e.preventDefault();
@@ -305,6 +339,7 @@ const BuildCanvas: React.FC<BuildCanvasProps> = (props) => {
         }}
       />
       <Stage
+        id="yourStageId" 
         width={canvasDimensions.width}
         height={canvasDimensions.height - 2}
         onMouseDown={handleCanvasMouseDown}

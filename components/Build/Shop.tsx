@@ -31,14 +31,13 @@ const Shop: React.FC<ShopProps> = (props) => {
   console.log(props.products)
   return (
     <div className="w-96 justify-center mx-5">
-      <div className="pt-5 mx-auto">
+      <div className="pt-5 flex items-center justify-center">
         <Button
-          className="shadow-xl"
+          className="shadow-xl mx-auto"
           onClick={async () => {
             await handleGenerateLayout(props)
           }}
         >
-          {' '}
           Generate New Layout{' '}
         </Button>
         <div className="flex flex-col my-2 overflow-x-hidden">
