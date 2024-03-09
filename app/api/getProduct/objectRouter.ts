@@ -22,6 +22,8 @@ const objectRouter = async (inits: IInitProduct, ss: string) => {
     case 'rug':
       additionalDetails=await resolveShapeDetails(ss)
       break
+    case 'plant':
+      break
     case 'chair':
       break
     default:

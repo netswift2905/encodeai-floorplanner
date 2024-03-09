@@ -1,9 +1,8 @@
-function Bed(props) {
+function Plant(props) {
     const objectProperties = props.product
     const height = objectProperties.depth / props.scale
     const width = objectProperties.width / props.scale
-  
-    const colour = objectProperties.colour
+
 
     return (
       <>
@@ -12,10 +11,9 @@ function Bed(props) {
             width: `${width}px`,
             height: `${height}px`,
             borderRadius: '5px',
-            backgroundColor: `${colour}`,
             backgroundSize: '100% 100%',
             backgroundImage:
-              'url(/doublebed.png)',
+              'url(/plant.png)',
             zIndex: 3,
           }}
         ></div>
@@ -23,5 +21,5 @@ function Bed(props) {
     )
   }
   
-  export default Bed
+  export default Plant
   

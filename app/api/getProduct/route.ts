@@ -1,7 +1,7 @@
 import getDetails from './usePuppeteer'
 import { NextResponse } from 'next/server'
 
-const isDummy = true
+const isDummy = false
 
 export async function POST(req: Request) {
   const inputUrl: string = await req.json()
