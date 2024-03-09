@@ -20,6 +20,7 @@ interface BuildCanvasProps {
   updateFloorPlans: () => Promise<void>
   stageItems: []
   setStageItems: (items: any[]) => void
+  budget :number
 }
 
 const BuildCanvas: React.FC<BuildCanvasProps> = (props) => {

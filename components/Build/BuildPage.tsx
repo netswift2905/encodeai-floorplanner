@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use client'
 
@@ -37,6 +37,7 @@ export const BuildPage: React.FC<{
   const [inputUrl, setInputUrl] = React.useState<string>('')
   const [products, setProducts] = React.useState<IFrontEndProduct[]>([])
   const [stageItems, setStageItems] = React.useState([])
+  const [budget,setBudget]=React.useState(0)
   const updateFloorPlans = async () => {
     const data = await getFloorPlans(supabase, user)
     setFloorPlans(data)
@@ -112,11 +113,23 @@ export const BuildPage: React.FC<{
     // pass setShapes down to sidebar property and then trigger it on a + button click.
     // no need for handleShaperightclick logic to live here -- should be in sidebar.
     setStageItems([...stageItems, newShape])
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    setBudget(budget + shapeProperties.price)
   }
+  React.useEffect(()=>{
+    let newBudget=0
+    for (const item of stageItems) {
+      // Ensure that item has the product attribute
+      if (item.product && typeof item.product === 'object' && 'price' in item.product) {
+        newBudget += item.product.price || 0;
+      }}
+    setBudget(newBudget)
+  },[stageItems])
 
   return (
     <div className="flex w-full h-full">
       <div className="flex w-full h-full relative">
+        BUDGET: {budget}
         <Shop products={products} handleAddToStage={handleAddToStage} setProducts={setProducts} isLoading={isLoading}  />
         <BuildTab
           updateFloorPlans={updateFloorPlans}
@@ -129,6 +142,8 @@ export const BuildPage: React.FC<{
           }
           stageItems={stageItems}
           setStageItems={setStageItems}
+          budget={budget}
+          setBudget={setBudget}
         />
       </div>
       <div className="fixed bottom-8 lg:bottom-16 left-0 w-full z-10">
@@ -168,6 +183,7 @@ const BuildTab: React.FC<{
   activeFloorPlanId: string
   stageItems: []
   setStageItems: () => Promise<void>
+
 }> = ({
   updateFloorPlans,
   setFloorPlan,
@@ -177,6 +193,7 @@ const BuildTab: React.FC<{
   activeFloorPlanId,
   stageItems,
   setStageItems,
+
 }) => {
   return (
     !(floorPlans.length === 0) && (
