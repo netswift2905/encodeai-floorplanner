@@ -15,6 +15,7 @@ import FloorPlanTabs from './FloorPlanTabs'
 import dynamic from 'next/dynamic'
 import { createObject } from '@/lib/supabase'
 import { getObjects } from '@/lib/supabase'
+import { forEach, initial } from 'lodash'
 
 
 // import { supabase } from "@/lib/supabaseClient";
@@ -109,6 +110,32 @@ export const BuildPage: React.FC<{
 
   React.useEffect(() => {
     updateFloorPlans()
+
+    // const initalProducts = getObjects(supabase, user)
+    getObjects(supabase, user).then((data) => {
+      console.log(data)
+      const currentProducts: IFrontEndProduct[] = []
+      forEach(data, (product) => {
+        // console.log(product)
+        // setProducts((prevProducts) => [...prevProducts, product])
+        const currentProduct: IFrontEndProduct = {
+          url: product.url,
+          object: product.object,
+          colour: product.colour,
+          price: product.price,
+          currency: product.currency,
+          width: product.width,
+          depth: product.depth,
+          // additionalDetails: product.additional_details,
+        }
+        currentProducts.push(currentProduct);
+      });
+
+      setProducts(currentProducts);
+
+
+    });
+
   }, [])
 
   const setFloorPlan = (index: number) => {
