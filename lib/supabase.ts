@@ -1,4 +1,6 @@
 import { type SupabaseClient, type User } from '@supabase/supabase-js'
+import { url } from 'inspector'
+import { Currency } from 'lucide-react'
 
 const createNewFloorPlan = async (
   supabase: SupabaseClient,
@@ -76,6 +78,37 @@ const createUser = async (supabase: SupabaseClient, user: User) => {
   }
 }
 
+const createObject = async (supabase: SupabaseClient, user: User, object: any) => {
+  try {
+    const { data, error } = await supabase.from('object').insert([
+      {
+        user_id: user.id,
+        url: object.url,
+        object: object.object,
+        colour: object.colour,
+        price: object.price,
+        currency: object.currency,
+        width: object.width,
+        depth: object.depth,
+        additional_details: object.additional_details,
+      },
+    ])
+    console.log('Inserted object:', data)
+
+  } catch (error) {
+    console.error('Error creating object:', error)
+  }
+}
+
+const getObjects = async (supabase: SupabaseClient, user: User) => {
+  const { data } = await supabase
+    .from('object')
+    .select('*')
+    .eq('user_id', user.id)
+
+  return data
+}
+
 export {
   updateFloorPlan,
   createUser,
@@ -83,4 +116,6 @@ export {
   userHasFloorPlan,
   getFloorPlans,
   getFloorPlan,
+  createObject,
+  getObjects,
 }

@@ -13,6 +13,10 @@ import { createClient } from '@/utils/supabase/client'
 import { getFloorPlans } from '@/lib/supabase'
 import FloorPlanTabs from './FloorPlanTabs'
 import dynamic from 'next/dynamic'
+import { createObject } from '@/lib/supabase'
+import { getObjects } from '@/lib/supabase'
+
+
 // import { supabase } from "@/lib/supabaseClient";
 
 const DynamicCanvas = dynamic(
@@ -79,6 +83,19 @@ export const BuildPage: React.FC<{
         console.log(newProduct)
         // add to catalogue logic
         setProducts((prevProducts) => [...prevProducts, newProduct])
+        
+        await createObject(supabase, user, {
+          user_id: user.id,
+          url: newProduct.url,
+          object: newProduct.object,
+          colour: newProduct.colour,
+          price: newProduct.price,
+          currency: newProduct.currency,
+          width: newProduct.width,
+          depth: newProduct.depth,
+          additional_details: newProduct.additional_details,
+        })
+      
       } catch (error) {
         console.error('Error:', error)
       } finally {
