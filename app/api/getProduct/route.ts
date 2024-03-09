@@ -1,5 +1,5 @@
 import getDetails from './usePuppeteer'
-// import { NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 
 const isDummy = true
 
