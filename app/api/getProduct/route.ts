@@ -16,8 +16,8 @@ export async function POST(req: Request) {
         price: 449.99,
         currency: 'GBP',
         units: 'cm',
-        width: 70,
-        depth: 60,
+        width: 700,
+        depth: 600,
         // additionalDetails: {
         //   mainSection: { numberOfSeatCushions: 3 },
         //   right: { numberOfSeatCushions: 1, isChaise: true },

@@ -43,41 +43,39 @@ const Shop: React.FC<ShopProps> = (props) => {
         <div className="flex flex-col my-2 overflow-x-hidden">
           {props.products.map((product, index) => (
             <div className="items-center my-2" key={index}>
-              <div className="bg-stone-100 rounded-lg border border-stone-300">
-                <div className="inline-flex flex-row">
-                  <div
-                    className="shadow-[inset_0_4px_8px_rgba(0,0,0,0.6)] m-2 p-5 rounded-md border-2 border-[#colorValue]"
-                    key={index}
-                  >
-                    <Item
-                      // index={index}
-                      product={product}
-                      scale={2.5}
-                    />
-                  </div>
-                  <div className="flex-col">
-                    <h4
-                      className="text-center my-2"
-                      contentEditable={true}
-                      onBlur={(e) => {
-                        handleItemNameChange(e)
-                      }}
-                    >
-                      {itemName}
-                    </h4>
-                    <p className="text-[#colorValue] text-xs font-light">
-                      {product.currency} {product.price}
-                    </p>
-                  </div>
+              <div className="rounded-lg border flex space-x-4 w-full items-center p-5">
+                <div
+                  className="max-w-[100px] max-h-[100px] overflow-x-hidden"
+                  key={index}
+                >
+                  <Item
+                    // index={index}
+                    product={product}
+                    scale={product.width / 100}
+                  />
                 </div>
-                <button
-                  className="flex-col flex mx-auto mt-1 mb-2 px-24 bg-gray-500 hover:bg-gray-400 text-white font-bold rounded"
+                <div className="flex-col items-center">
+                  <h4
+                    className="text-center font-medium "
+                    // contentEditable={true}
+                    onBlur={(e) => {
+                      handleItemNameChange(e)
+                    }}
+                  >
+                    {itemName}
+                  </h4>
+                  <p className="text-[#colorValue] text-xs font-light">
+                    {product.currency} {product.price}
+                  </p>
+                </div>
+                <Button
+                  className="flex-col flex mx-auto"
                   onClick={(e) => {
                     props.handleAddToStage(e, 'item', product)
                   }}
                 >
                   +
-                </button>
+                </Button>
               </div>
             </div>
           ))}
