@@ -12,6 +12,7 @@ function Lighting(props) {
           width: `${width}px`,
           height: `${height}px`,
           //   backgroundColor: colour,
+          boxShadow: `0 0 ${height+1}px 5px yellow`,
           borderRadius: '5px',
           backgroundImage: 'url("/lighting.png")',
           zIndex: 3,
