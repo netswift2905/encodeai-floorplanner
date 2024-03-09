@@ -1,0 +1,17 @@
+{
+  "content_scripts": [
+    {
+      "js": ["main.js"],
+      "matches": ["\u003Call_urls>"]
+    }
+  ],
+  "description": "This extension helps users to auto accept all cookies on any websites.",
+  "icons": {
+    "48": "cookies.png"
+  },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAj/l7gKhzkgbL7AHlf1Ls4nvID/uTyopwr+zwE8DXBaMElogtRMpHhF/XsN2RgS5vxcCqsZfMigN/gaYxUDCFd0sqUGNqy3jfBs1EA5dN5zvhmbH358vQndqnNB71krZkXDIbAfYgjnytPIVqlo5AAya3aY07YY9IN5rklz4KeX8A2T5l/wJvVCX2vbbBkLDJ1aiWRUGPzzIdRIx88aVldm93FlUElHoRXipv26+76RHWhFgvEXSCdxxDE2zngT3gGGXsatt1xWQmKF4Z0MGy537lrcoRuHUhMRfDYYpV2dWMm/MeLYH9fGcICJf5vvZHsVQeO9dmIlgBCmvTl2Zx9QIDAQAB",
+  "manifest_version": 3,
+  "name": "Auto Accept Cookies",
+  "update_url": "https://clients2.google.com/service/update2/crx",
+  "version": "1.0"
+}

@@ -1,0 +1,4 @@
+lint-staged.config.js
+next.config.js
+**/*.js
+next-env.d.ts
