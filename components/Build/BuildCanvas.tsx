@@ -228,39 +228,6 @@ const BuildCanvas: React.FC<BuildCanvasProps> = (props) => {
     router.push(`/f/${activeFloorPlanId}`)
   }
 
-  const screenshot = async () => {
-    try {
-      // Dynamically import html2canvas
-      const html2canvas = await import('html2canvas')
-
-      // Now you can use html2canvas in your component
-      // Get the stage canvas element by ID
-      const stageCanvas = document.getElementById('yourStageId')
-
-      if (stageCanvas) {
-        // Use html2canvas with the stage canvas element
-        html2canvas.default(stageCanvas).then((canvas) => {
-          // Convert the canvas to a data URL (PNG format)
-          const dataUrl = canvas.toDataURL('image/png')
-
-          // Create a link element to download the image
-          const downloadLink = document.createElement('a')
-          downloadLink.href = dataUrl
-          downloadLink.download = 'canvas_image.png'
-
-          // Trigger a click event on the link to initiate the download
-          downloadLink.click()
-        })
-      } else {
-        console.error('Stage canvas element not found.')
-      }
-    } catch (error) {
-      console.error('Error loading html2canvas:', error)
-    }
-  }
-<<<<<<< HEAD
-=======
-
   // const [scaleInputOpen, setScaleInputOpen] = useState(false)
   const [meterToPixel, setMeterToPixel] = useState<number | null>(null) // 1 cm * scale = pixel
 
@@ -278,7 +245,6 @@ const BuildCanvas: React.FC<BuildCanvasProps> = (props) => {
 
     setMeterToPixel(newMtoPixel)
   }
->>>>>>> main
 
   return (
     <div className="relative w-full h-full">
@@ -326,8 +292,6 @@ const BuildCanvas: React.FC<BuildCanvasProps> = (props) => {
       </div>
 
       <div className="absolute top-4 right-4 z-20 flex flex-row items-center gap-2">
-<<<<<<< HEAD
-=======
         <div className="flex ">
           {/* <Input
             className="mr-3 w-[130px] text-sm"
@@ -337,10 +301,9 @@ const BuildCanvas: React.FC<BuildCanvasProps> = (props) => {
             Set Scale
           </Button>
         </div>
->>>>>>> main
-        <Button variant={'outline'} size={'sm'} onClick={screenshot}>
+        {/* <Button variant={'outline'} size={'sm'} onClick={screenshot}>
           Save as PNG
-        </Button>
+        </Button> */}
         <Button
           // onMouseOver={(e) => {
           //     e.preventDefault();
@@ -460,9 +423,9 @@ export default BuildCanvas
 export const RenderWall = ({ index, wall, meterToPixel }: any) => {
   const [popoverOpen, setPopoverOpen] = useState(false)
   const getLengthInMeters = () => {
-    let x_dist = wall.end.x - wall.start.x
-    let y_dist = wall.end.y - wall.start.y
-    let wallLengthInPixels = Math.sqrt(
+    const x_dist = wall.end.x - wall.start.x
+    const y_dist = wall.end.y - wall.start.y
+    const wallLengthInPixels = Math.sqrt(
       Math.pow(x_dist, 2) + Math.pow(y_dist, 2)
     )
 
