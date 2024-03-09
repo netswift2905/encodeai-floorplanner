@@ -3,7 +3,7 @@ import Table from './Table'
 import Store from './Store'
 import Rug from './Rug'
 import Lighting from './Lighting'
-// import Bed from './Bed'
+import Bed from './Bed'
 
 import { Html } from 'react-konva-utils'
 import { Rect, Group, Transformer } from 'react-konva'
@@ -52,8 +52,9 @@ export const Item = (props) => {
     case 'lighting':
       outputItem = <Lighting product={props.product} scale={props.scale} />
       break
-    // case 'bed':
-    //   outputItem = <Bed product={props.product} scale={props.scale} />
+    case 'bed':
+      outputItem = <Bed product={props.product} scale={props.scale} />
+      break
     default:
       outputItem = <div className="bg-red-500 w-5 h-5"></div>
   }

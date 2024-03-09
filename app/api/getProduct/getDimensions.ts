@@ -19,6 +19,7 @@ const getDimensions = async (snippets: string[]) => {
           WidthX and WidthY can also be known as Width right and Width left in some snippets. Sometimes the information is contained in a table format that you must read. 
           
           If an objects has only height and diameter, then the diameter is both the widthX and widthY.  
+          If there is only a length measurement and no depth measurement, use the length as depth.
           
           Respond in the following JSON format, with no trailing commas or any other formatting. Start your response only with curly braces:
           {
