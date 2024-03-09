@@ -124,7 +124,7 @@ export const BuildPage: React.FC<{
           currency: product.currency,
           width: product.width,
           depth: product.depth,
-          // additionalDetails: product.additional_details,
+          additionalDetails: product.additional_details,
         }
         currentProducts.push(currentProduct)
       })
