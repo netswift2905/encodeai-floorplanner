@@ -21,5 +21,5 @@ function Plant(props) {
     )
   }
   
-  export default Bed
+  export default Plant
   

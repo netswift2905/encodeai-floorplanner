@@ -24,31 +24,27 @@ const handleGenerateLayout = async (props) => {
 }
 
 const Shop: React.FC<ShopProps> = (props) => {
-  const [itemName, setItemName] = useState('New Item')
+  const [itemNames, setItemNames] = useState<string[]>(Array.from({ length: props.products.length }, () => 'New Item'));
 
-  const handleItemNameChange = (e) => {
-    const newName = e.target.innerText
-    setItemName(newName)
-  }
+  const handleItemNameChange = (e, index) => {
+    const newName = e.target.innerText;
+    setItemNames((prevNames) => {
+      const newNames = [...prevNames];
+      newNames[index] = newName;
+      return newNames;
+    });
+  };
 
   console.log(props.products)
   return (
     <div className="w-96 justify-center mx-5">
-      <div className="pt-5 flex items-center justify-center flex flex-col ">
-        {/* <Button
-          className="shadow-xl mx-auto"
-          onClick={async () => {
-            await handleGenerateLayout(props)
-          }}
-        >
-          Generate New Layout{' '}
-        </Button> */}
+      <div className="pt-5 items-center justify-center flex flex-col ">
         <div className="flex flex-col my-2 overflow-x-hidden">
           {props.products.map((product, index) => (
             <div className="items-center my-2" key={index}>
               <div className="rounded-lg border flex space-x-4 w-full items-center p-5">
                 <div
-                  className="max-w-[110px] max-h-[100px] overflow-x-hidden"
+                  className="max-w-[110px] max-h-[100px] overflow-hidden"
                   key={index}
                 >
                   <Item
@@ -59,13 +55,13 @@ const Shop: React.FC<ShopProps> = (props) => {
                 </div>
                 <div className="flex-col items-center">
                   <h5
-                    className="text-center font-medium "
-                    // contentEditable={true}
+                    className="text-center font-medium contenteditable"
+                    contentEditable={true}
                     onBlur={(e) => {
-                      handleItemNameChange(e)
-                    }}
-                  >
-                    {itemName}
+                        handleItemNameChange(e, index);
+                      }}
+                    >
+                      {itemNames[index]}
                   </h5>
                   <p className="text-[#colorValue] text-xs font-light">
                     {product.currency} {product.price}

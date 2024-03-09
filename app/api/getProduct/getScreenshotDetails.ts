@@ -24,6 +24,7 @@ const getObject = async (base64: string) => {
             - "table"
             - "storage"
             - "rug"
+            - "plant"
             - "other"
 
             1. Place the object in the category that most closely matches it. If there is no match, then place it in 'other'.
