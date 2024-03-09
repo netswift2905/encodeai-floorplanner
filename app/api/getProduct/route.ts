@@ -11,17 +11,17 @@ export async function POST(req: Request) {
     ? await getDetails(inputUrl)
     : {
         url: inputUrl,
-        object: 'sofa',
-        colour: '#964B00',
-        price: 449.99,
+        object: 'plant',
+        colour: '#A9A9A9',
+        price: 130.0,
         currency: 'GBP',
         units: 'cm',
         width: 200,
-        depth: 140,
-        additionalDetails: {
-          mainSection: { numberOfSeatCushions: 3 },
-          right: { numberOfSeatCushions: 1, isChaise: true },
-        },
+        depth: 50,
+        // additionalDetails: {
+        //   mainSection: { numberOfSeatCushions: 3 },
+        //   right: { numberOfSeatCushions: 1, isChaise: true },
+        // },
       }
   // @ts-expect-error
   return Response.json(_response, { status: 200 })
