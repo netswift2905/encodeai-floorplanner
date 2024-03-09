@@ -26,7 +26,7 @@ yarn install
 For yarn:
 
 ```bash
-yarn dev
+yarn run dev
 ```
 
 ### 5. Visit `http://localhost:3000` in your browser to see the running app.
