@@ -38,17 +38,25 @@ const Shop: React.FC<ShopProps> = (props) => {
 
       if (stageCanvas) {
         // Use html2canvas with the stage canvas element
-        html2canvas.default(stageCanvas).then((canvas) => {
+        await html2canvas.default(stageCanvas).then(async (canvas) => {
+          const dataUrl = canvas.toDataURL('image/png').split(';base64,')[1]
+          console.log(dataUrl)
+          let res = await fetch('/api/getReview', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ base64: dataUrl }),
+          })
+          console.log(res)
           // Convert the canvas to a data URL (PNG format)
-          const dataUrl = canvas.toDataURL('image/png')
-
-          // Create a link element to download the image
-          const downloadLink = document.createElement('a')
-          downloadLink.href = dataUrl
-          downloadLink.download = 'canvas_image.png'
-
-          // Trigger a click event on the link to initiate the download
-          downloadLink.click()
+          // const dataUrl = canvas.toDataURL('image/png')
+          // // Create a link element to download the image
+          // const downloadLink = document.createElement('a')
+          // downloadLink.href = dataUrl
+          // downloadLink.download = 'canvas_image.png'
+          // // Trigger a click event on the link to initiate the download
+          // downloadLink.click()
         })
       } else {
         console.error('Stage canvas element not found.')
