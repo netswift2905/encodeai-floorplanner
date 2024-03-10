@@ -42,3 +42,6 @@ The current home design process is cumbersome and stressful, relying on outdated
 Kondo AI is a Next.js application, rendered on the frontend using HTML, Typescript, Javascript, CSS and IMGs. The backend is powered by Supabase.
 
 We have designed web scraping algorithms that reliably find key product content (photos, price, colour, dimensions). LLMs then enhance and structure the scraped content into a JSON object, which becomes translated into an precisely scaled and moveable furniture item within the user's floor plan. These form building blocks the user can utilise to plan their layouts accurately, with real, to-scale products. Screenshots of their floor plans can be sent to GPT for item suggestions, layout review and budgeting advice. 
+
+### Demo Images
+
