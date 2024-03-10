@@ -1,7 +1,7 @@
 # Kondo AI
 
 ## Project Summary   
-A floorplanning app that seamlessly transforms real products to scale. Kondo AI leverages GPT Vision to create an AI companion for personalised reviews and ratings, and gamifies the overall user experience.
+Our solution is Kondo AI, the easiest and most entertaining way to design your home. Kondo AI is a floorplanning app that seamlessly transforms real products to scale. It leverages GPT Vision to create an AI companion for personalised reviews and ratings, and gamifies the overall user experience. With accurate scaling of room sizes and furniture it also reduces the hassle of measurement-taking. We further simplify the planning process by tracking both the total costs and physical placement of wishlist furniture items in one place.
 
 ## Running Locally
 
