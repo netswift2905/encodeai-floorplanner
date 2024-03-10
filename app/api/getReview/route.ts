@@ -5,25 +5,19 @@ import {
 } from 'openai/resources'
 import fs from 'fs'
 
-const openaiapiKey = process.env.OPENAI_API_KEY
-
 import formidable from 'formidable'
 import { get } from 'lodash'
 import { NextResponse } from 'next/server'
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-}
+const openaiapiKey = process.env.OPENAI_API_KEY
 
 export async function POST(req: Request, res: Response): Promise<Response> {
   const body = await req.json()
 
-  let base64 = body.base64
-  let result = await getObject(base64)
+  const base64 = body.base64
+  const result = await getObject(base64)
 
-  let toReturn = {
+  const toReturn = {
     response: result,
   }
   return Response.json(toReturn, { status: 200 })
@@ -39,7 +33,8 @@ const getObject = async (base64: string) => {
       content: `
 You are an interior designer assistant. You will be given an image of a floorplan designed by a user, and your job is to give comments on how to improve the floorplan, as well as give a rating out of 10 on how well the floorplan is designed.\
 Provide your answer in a step by step approach, explaining what each aspect of the floorplan is and how it can be improved.\
-At the end, give a description of why the rating you gave is appropriate. Limit your response to 1000 characters`,
+At the end, give a description of why the rating you gave is appropriate. Limit your response to 1000 characters.
+please give me a good and short review`,
     },
     {
       role: 'user',

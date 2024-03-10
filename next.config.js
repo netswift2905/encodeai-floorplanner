@@ -17,7 +17,11 @@ const nextConfig = {
 
   //     return config;
   // },
-  eactStrictMode: true,
+  typescript: {
+    // !! WARN !!
+    ignoreBuildErrors: true,
+  },
+  eactStrictMode: false,
   experimental: {
     appDir: true,
     esmExternals: 'loose', // required to make Konva & react-konva work

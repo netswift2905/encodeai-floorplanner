@@ -63,13 +63,6 @@ const BuildCanvas: React.FC<BuildCanvasProps> = (props) => {
       )
     })
   }
-  const handleRemoveItem = (index) => {
-    // addToHistory();
-    props.setStageItems((currentStageItems) =>
-      currentStageItems.filter((_, i) => i !== index)
-    )
-    // console.log(index);
-  }
 
   const fetchFloorPlan = async (): Promise<void> => {
     setCurrentFloorPlanState(

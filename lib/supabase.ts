@@ -78,7 +78,11 @@ const createUser = async (supabase: SupabaseClient, user: User) => {
   }
 }
 
-const createObject = async (supabase: SupabaseClient, user: User, object: any) => {
+const createObject = async (
+  supabase: SupabaseClient,
+  user: User,
+  object: any
+) => {
   try {
     const { data, error } = await supabase.from('object').insert([
       {
@@ -94,7 +98,6 @@ const createObject = async (supabase: SupabaseClient, user: User, object: any) =
       },
     ])
     console.log('Inserted object:', data)
-
   } catch (error) {
     console.error('Error creating object:', error)
   }

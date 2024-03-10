@@ -23,7 +23,7 @@ export async function POST(req: Request) {
         //   right: { numberOfSeatCushions: 1, isChaise: true },
         // },
       }
-  // @ts-expect-error
+
   return Response.json(_response, { status: 200 })
   // return NextResponse.redirect(new URL('/build', req.url))
   // return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })

@@ -1,11 +1,11 @@
 import OpenAI from 'openai'
-import { type ChatCompletionMessageParam } from 'openai/resources'
+import { ChatCompletionMessageParam } from 'openai/resources'
 
 const openaiapiKey = process.env.OPENAI_API_KEY
 
 const isDummy = false
 
-const getDimensions = async (snippets: string[]) => {
+const getDimensions = async (snippets) => {
   const openai = new OpenAI({
     apiKey: openaiapiKey,
   })
