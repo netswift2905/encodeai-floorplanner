@@ -44,4 +44,6 @@ Kondo AI is a Next.js application, rendered on the frontend using HTML, Typescri
 We have designed web scraping algorithms that reliably find key product content (photos, price, colour, dimensions). LLMs then enhance and structure the scraped content into a JSON object, which becomes translated into an precisely scaled and moveable furniture item within the user's floor plan. These form building blocks the user can utilise to plan their layouts accurately, with real, to-scale products. Screenshots of their floor plans can be sent to GPT for item suggestions, layout review and budgeting advice. 
 
 ### Demo Images
-
+![Demo4](https://github.com/netswift2905/encodeai-floorplanner/assets/80419704/f0f4ee0c-0b22-4a6b-8253-985b46631a5f)
+![kondoAI](https://github.com/netswift2905/encodeai-floorplanner/assets/80419704/05cf0d18-deb3-4e61-bd14-d00932317de1)
+![Demo1](https://github.com/netswift2905/encodeai-floorplanner/assets/80419704/b1b2c117-59dc-4b95-8eac-110139b75e35)
