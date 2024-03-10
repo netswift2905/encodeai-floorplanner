@@ -38,12 +38,7 @@ yarn run dev
 ### Problem Statement  
 The current home design process is cumbersome and stressful, relying on outdated methods like tape measures and imagination. This leads to potential costly mistakes in furniture selection. Consumers seek a reliable and efficient solution for home planning but are deterred by the tedious and time-consuming nature of existing floor planning software. We are here to provide a solution.
 
-### Our Solution
-We have designed web scraping algorithms that reliably find key product content (photos, price, colour, dimensions). LLMs then enhance and structure the scraped content into a JSON object, which becomes translated into an precisely scaled and moveable furniture item within the user's floor plan. These form building blocks the user can utilise to plan their layouts accurately, with real, to-scale products. Screenshots of their floor plans can be sent to GPT for item suggestions, layout review and budgeting advice. 
-
-### Implementation
+### Our Solution Implementation
 Kondo AI is a Next.js application, rendered on the frontend using HTML, Typescript, Javascript, CSS and IMGs. The backend is powered by Supabase.
-- Web scraping algorithms reliably find key product content (photos, price, colour, dimensions)
-- LLMs enhance and structure the scraped content, into a JSON object
-- Product is rendered on the frontend using HTML and IMGs. User can plan layout accurately with real, to-scale products
-- Screenshot of floorplan can be sent to GPT for item suggestions, layout review and budgeting
+
+We have designed web scraping algorithms that reliably find key product content (photos, price, colour, dimensions). LLMs then enhance and structure the scraped content into a JSON object, which becomes translated into an precisely scaled and moveable furniture item within the user's floor plan. These form building blocks the user can utilise to plan their layouts accurately, with real, to-scale products. Screenshots of their floor plans can be sent to GPT for item suggestions, layout review and budgeting advice. 
