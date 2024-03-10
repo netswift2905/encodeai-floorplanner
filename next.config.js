@@ -28,6 +28,8 @@ const nextConfig = {
     serverComponentsExternalPackages: [
       'puppeteer-extra',
       'puppeteer-extra-plugin-stealth', // required to make puppeteer plugins work
+      'puppeteer-core',
+      '@sparticuz/chromium',
     ],
   },
   webpack: (config) => {

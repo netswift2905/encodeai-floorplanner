@@ -3,17 +3,24 @@
 /* eslint-disable no-cond-assign */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable max-len */
-import puppeteer from 'puppeteer-extra'
-import puppeteerStealth from 'puppeteer-extra-plugin-stealth'
+import puppeteer from 'puppeteer-core'
+// import puppeteerStealth from 'puppeteer-extra-plugin-stealth'
+import chromium from '@sparticuz/chromium'
 import getDimensions from './getDimensions'
 import getObject from './getScreenshotDetails'
 import objectRouter from './objectRouter'
 
 const usePuppeteer = async (url: string) => {
-  puppeteer.use(puppeteerStealth())
+  // puppeteer.use(puppeteerStealth())
   const browser = await puppeteer.launch({
-    headless: true,
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath(),
+    headless: chromium.headless,
+    ignoreHTTPSErrors: true,
     args: [
+      ...chromium.args,
+      '--hide-scrollbars',
+      '--disable-web-security',
       // extensions from /Users/XYZ/Library/Application Support/Google/Chrome/Profile 1/Extensions/
       // or we can just host in the US and probably avoid these popups
       '--disable-extensions-except=./app/api/getProduct/puppeteer-extensions/cookieblocker,./app/api/getProduct/puppeteer-extensions/cookieblocker2',
@@ -55,8 +62,6 @@ const usePuppeteer = async (url: string) => {
       width: 1280,
     },
   })
-
-
 
   async function extractText() {
     const extractedText = (
