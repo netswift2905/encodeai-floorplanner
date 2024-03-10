@@ -1,8 +1,8 @@
 # Kondo AI
 
-## Project Summary 
+## Project Summary   
 A floorplanning app that seamlessly transforms real products to scale. Kondo AI also features an AI companion for personalised reviews and ratings, and gamifies the overall user experience.
------
+
 ## Running Locally
 
 ### 1. Clone your newly created repo:
@@ -35,8 +35,13 @@ yarn run dev
 ### 5. Visit `http://localhost:3000` in your browser to see the running app.
 ------
 ## Project Overview
-# Market Impact 
-# Implementation
+### Problem Statement  
+The current home design process is cumbersome and stressful, relying on outdated methods like tape measures and imagination. This leads to potential costly mistakes in furniture selection. Consumers seek a reliable and efficient solution for home planning but are deterred by the tedious and time-consuming nature of existing floor planning software. We are here to provide a solution.
+
+### Our Solution
+We have designed web scraping algorithms that reliably find key product content (photos, price, colour, dimensions). LLMs then enhance and structure the scraped content into a JSON object, which becomes translated into an precisely scaled and moveable furniture item within the user's floor plan. These form building blocks the user can utilise to plan their layouts accurately, with real, to-scale products. Screenshots of their floor plans can be sent to GPT for item suggestions, layout review and budgeting advice. Kondo AI is rendered on the frontend using HTML and IMGs.  
+
+### Implementation
 - Web scraping algorithms reliably find key product content (photos, price, colour, dimensions)
 - LLMs enhance and structure the scraped content, into a JSON object
 - Product is rendered on the frontend using HTML and IMGs. User can plan layout accurately with real, to-scale products
