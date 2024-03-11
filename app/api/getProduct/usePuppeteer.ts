@@ -13,7 +13,7 @@ import objectRouter from './objectRouter'
 
 const usePuppeteer = async (url: string) => {
   let browser
-  let version =;
+  let version
   try {
     if (process.env.LOCAL === '1') {
       version = 'puppeteer extra -- local'
