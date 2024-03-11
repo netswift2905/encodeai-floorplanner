@@ -35,4 +35,4 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-/app/api/getProduct/screenshot.jpg
+app/api/getProduct/screenshot.jpg

@@ -13,8 +13,10 @@ import objectRouter from './objectRouter'
 
 const usePuppeteer = async (url: string) => {
   let browser
+  let version =;
   try {
     if (process.env.LOCAL === '1') {
+      version = 'puppeteer extra -- local'
       puppeteerLocal.use(puppeteerStealth())
       browser = await puppeteerLocal.launch({
         headless: true,
@@ -26,6 +28,7 @@ const usePuppeteer = async (url: string) => {
         ],
       })
     } else {
+      version = 'puppeteer core -- prod'
       browser = await puppeteer.launch({
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath(),
@@ -41,7 +44,7 @@ const usePuppeteer = async (url: string) => {
       })
     }
 
-    console.log('puppeteer launched' + JSON.stringify(browser))
+    console.log('puppeteer launched ' + version)
   } catch (error) {
     console.error('Failed to launch browser:', error.code)
 
@@ -71,18 +74,18 @@ const usePuppeteer = async (url: string) => {
 
   await new Promise((resolve) => setTimeout(resolve, 500))
 
-  if ((process.env.LOCAL = '1')) {
-    await page.screenshot({
-      path: './app/api/getProduct/screenshot.jpg',
-      optimizeForSpeed: true,
-      clip: {
-        x: 0,
-        y: 0,
-        height: 1000,
-        width: 1280,
-      },
-    })
-  }
+  // if ((process.env.LOCAL = '1')) {
+  //   await page.screenshot({
+  //     path: './app/api/getProduct/screenshot.jpg',
+  //     optimizeForSpeed: true,
+  //     clip: {
+  //       x: 0,
+  //       y: 0,
+  //       height: 1000,
+  //       width: 1280,
+  //     },
+  //   })
+  // }
 
   async function extractText() {
     const extractedText = (
