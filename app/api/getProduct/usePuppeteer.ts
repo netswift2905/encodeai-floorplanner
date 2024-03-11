@@ -12,22 +12,29 @@ import objectRouter from './objectRouter'
 
 const usePuppeteer = async (url: string) => {
   // puppeteer.use(puppeteerStealth())
-  const browser = await puppeteer.launch({
-    defaultViewport: chromium.defaultViewport,
-    executablePath: await chromium.executablePath(),
-    headless: chromium.headless,
-    ignoreHTTPSErrors: true,
-    args: [
-      ...chromium.args,
-      '--hide-scrollbars',
-      '--disable-web-security',
-      // extensions from /Users/XYZ/Library/Application Support/Google/Chrome/Profile 1/Extensions/
-      // or we can just host in the US and probably avoid these popups
-      '--disable-extensions-except=./app/api/getProduct/puppeteer-extensions/cookieblocker,./app/api/getProduct/puppeteer-extensions/cookieblocker2',
-      '--load-extension=./app/api/getProduct/puppeteer-extensions/cookieblocker,./app/api/getProduct/puppeteer-extensions/cookieblocker2',
-    ],
-  })
+  let browser
+  try {
+    console.log('attempting to launch puppeteer')
 
+    browser = await puppeteer.launch({
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
+      ignoreHTTPSErrors: true,
+      args: [
+        ...chromium.args,
+        '--hide-scrollbars',
+        '--disable-web-security',
+        '--disable-extensions-except=./app/api/getProduct/puppeteer-extensions/cookieblocker,./app/api/getProduct/puppeteer-extensions/cookieblocker2',
+        '--load-extension=./app/api/getProduct/puppeteer-extensions/cookieblocker,./app/api/getProduct/puppeteer-extensions/cookieblocker2',
+      ],
+    })
+    console.log('it launched')
+  } catch (error) {
+    console.error('Failed to launch browser:', error.code)
+
+    throw error // or return; depending on your error handling strategy
+  }
   const page = await browser.newPage()
 
   await page.setExtraHTTPHeaders({
@@ -41,7 +48,7 @@ const usePuppeteer = async (url: string) => {
   })
   await page.setViewport({ width: 1280, height: 720 })
   try {
-    await page.goto(url, { waitUntil: 'networkidle0', timeout: 7000 })
+    await page.goto(url, { waitUntil: 'networkidle0', timeout: 3000 })
   } catch (e) {
     console.log('Page loading timed out')
   }

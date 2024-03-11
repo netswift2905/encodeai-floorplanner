@@ -5,7 +5,7 @@ const isDummy = false
 
 export async function POST(req: Request) {
   const inputUrl: string = await req.json()
-
+  console.log('hi from backend')
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const _response: IResolvedProduct = !isDummy
     ? await getDetails(inputUrl)
