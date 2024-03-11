@@ -59,16 +59,16 @@ const usePuppeteer = async (url: string) => {
 
   await new Promise((resolve) => setTimeout(resolve, 500))
 
-  await page.screenshot({
-    path: './app/api/getProduct/screenshot.jpg',
-    optimizeForSpeed: true,
-    clip: {
-      x: 0,
-      y: 0,
-      height: 1000,
-      width: 1280,
-    },
-  })
+  // await page.screenshot({
+  //   path: './app/api/getProduct/screenshot.jpg',
+  //   optimizeForSpeed: true,
+  //   clip: {
+  //     x: 0,
+  //     y: 0,
+  //     height: 1000,
+  //     width: 1280,
+  //   },
+  // })
 
   async function extractText() {
     const extractedText = (
