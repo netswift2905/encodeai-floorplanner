@@ -4,32 +4,44 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable max-len */
 import puppeteer from 'puppeteer-core'
-// import puppeteerStealth from 'puppeteer-extra-plugin-stealth'
+import puppeteerLocal from 'puppeteer-extra'
+import puppeteerStealth from 'puppeteer-extra-plugin-stealth'
 import chromium from '@sparticuz/chromium'
 import getDimensions from './getDimensions'
 import getObject from './getScreenshotDetails'
 import objectRouter from './objectRouter'
 
 const usePuppeteer = async (url: string) => {
-  // puppeteer.use(puppeteerStealth())
   let browser
   try {
-    console.log('attempting to launch puppeteer')
+    if (process.env.LOCAL === '1') {
+      puppeteerLocal.use(puppeteerStealth())
+      browser = await puppeteerLocal.launch({
+        headless: true,
+        args: [
+          // extensions from /Users/XYZ/Library/Application Support/Google/Chrome/Profile 1/Extensions/
+          // or we can just host in the US and probably avoid these popups
+          '--disable-extensions-except=./app/api/getProduct/puppeteer-extensions/cookieblocker,./app/api/getProduct/puppeteer-extensions/cookieblocker2',
+          '--load-extension=./app/api/getProduct/puppeteer-extensions/cookieblocker,./app/api/getProduct/puppeteer-extensions/cookieblocker2',
+        ],
+      })
+    } else {
+      browser = await puppeteer.launch({
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath(),
+        headless: chromium.headless,
+        ignoreHTTPSErrors: true,
+        args: [
+          ...chromium.args,
+          '--hide-scrollbars',
+          '--disable-web-security',
+          '--disable-extensions-except=./app/api/getProduct/puppeteer-extensions/cookieblocker,./app/api/getProduct/puppeteer-extensions/cookieblocker2',
+          '--load-extension=./app/api/getProduct/puppeteer-extensions/cookieblocker,./app/api/getProduct/puppeteer-extensions/cookieblocker2',
+        ],
+      })
+    }
 
-    browser = await puppeteer.launch({
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath(),
-      headless: chromium.headless,
-      ignoreHTTPSErrors: true,
-      args: [
-        ...chromium.args,
-        '--hide-scrollbars',
-        '--disable-web-security',
-        '--disable-extensions-except=./app/api/getProduct/puppeteer-extensions/cookieblocker,./app/api/getProduct/puppeteer-extensions/cookieblocker2',
-        '--load-extension=./app/api/getProduct/puppeteer-extensions/cookieblocker,./app/api/getProduct/puppeteer-extensions/cookieblocker2',
-      ],
-    })
-    console.log('it launched')
+    console.log('puppeteer launched' + JSON.stringify(browser))
   } catch (error) {
     console.error('Failed to launch browser:', error.code)
 
@@ -59,16 +71,18 @@ const usePuppeteer = async (url: string) => {
 
   await new Promise((resolve) => setTimeout(resolve, 500))
 
-  // await page.screenshot({
-  //   path: './app/api/getProduct/screenshot.jpg',
-  //   optimizeForSpeed: true,
-  //   clip: {
-  //     x: 0,
-  //     y: 0,
-  //     height: 1000,
-  //     width: 1280,
-  //   },
-  // })
+  if ((process.env.LOCAL = '1')) {
+    await page.screenshot({
+      path: './app/api/getProduct/screenshot.jpg',
+      optimizeForSpeed: true,
+      clip: {
+        x: 0,
+        y: 0,
+        height: 1000,
+        width: 1280,
+      },
+    })
+  }
 
   async function extractText() {
     const extractedText = (
@@ -127,8 +141,9 @@ const usePuppeteer = async (url: string) => {
 
   // if no text found first, then try click on words in the hope of surfacing dimensions.
   async function extractAndRetryWithDifferentClicks() {
+    console.log('trying to extract text')
     let gptDimensionsInput = await extractText()
-
+    console.log(gptDimensionsInput)
     // Early return if initial extraction is successful
     if (gptDimensionsInput.length > 0) {
       return gptDimensionsInput
@@ -201,9 +216,9 @@ const usePuppeteer = async (url: string) => {
       } catch (error) {
         console.error('Error in workflow 2:', error)
         return {
-          units: null,
-          widthX: null,
-          widthY: null,
+          units: 'cm',
+          widthX: 100,
+          widthY: 100,
         }
       }
     }

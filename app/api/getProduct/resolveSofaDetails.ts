@@ -95,7 +95,7 @@ const resolveSofaDetails = async (base64: string) => {
     }
   }
   Note: The terms 'left' and 'right' are from the viewer's perspective facing the sofa.
-  If you cannot determine the sofa layout, output: "error"
+
             `,
         },
 
