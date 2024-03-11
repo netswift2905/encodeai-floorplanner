@@ -48,7 +48,7 @@ const usePuppeteer = async (url: string) => {
   })
   await page.setViewport({ width: 1280, height: 720 })
   try {
-    await page.goto(url, { waitUntil: 'networkidle0', timeout: 3000 })
+    await page.goto(url, { waitUntil: 'networkidle0', timeout: 7000 })
   } catch (e) {
     console.log('Page loading timed out')
   }
