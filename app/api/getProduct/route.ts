@@ -2,7 +2,7 @@ import getDetails from './usePuppeteer'
 import { NextResponse } from 'next/server'
 
 const isDummy = false
-
+export const maxDuration = 30
 export async function POST(req: Request) {
   const inputUrl: string = await req.json()
   console.log('hi from backend')
