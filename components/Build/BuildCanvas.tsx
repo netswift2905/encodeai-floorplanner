@@ -371,26 +371,26 @@ const BuildCanvas: React.FC<BuildCanvasProps> = (props) => {
             // return null
           })}
           {props.stageItems.map((shape, index) => {
-            if (shape.type === 'item') {
-              return (
-                <StageItem
-                  scale={meterToPixel ? 100 / meterToPixel : 1}
-                  key={index}
-                  index={index}
-                  handleRemoveStageItem={handleRemoveStageItem}
-                  product={shape.product}
-                  handleDragEnd={handleDragEnd}
-                  handleRotation={handleRotation}
-                  dragBoundFunc={dragBoundFunc}
-                  setSelectedIndex={setSelectedIndex}
-                  isSelected={selectedIndex === index}
-                  x={shape.x}
-                  y={shape.y}
-                  rotation={shape.rotation}
-                />
-              )
-            }
-            return null
+            // if (shape.type === 'item') {
+            return (
+              <StageItem
+                scale={meterToPixel ? 100 / meterToPixel : 1}
+                key={index}
+                index={index}
+                handleRemoveStageItem={handleRemoveStageItem}
+                product={shape.product}
+                handleDragEnd={handleDragEnd}
+                handleRotation={handleRotation}
+                dragBoundFunc={dragBoundFunc}
+                setSelectedIndex={setSelectedIndex}
+                isSelected={selectedIndex === index}
+                x={shape.x}
+                y={shape.y}
+                rotation={shape.rotation}
+              />
+            )
+            // }
+            // return null
           })}
           {isDrawing && tempLine !== null && (
             <Line

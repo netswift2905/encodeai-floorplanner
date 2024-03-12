@@ -47,6 +47,7 @@
     "busboy": "^1.6.0",
     "canvas": "^2.11.2",
     "chrome-aws-lambda": "^10.1.0",
+    "chromium": "^3.0.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",

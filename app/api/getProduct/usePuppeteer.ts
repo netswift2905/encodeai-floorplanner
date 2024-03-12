@@ -4,8 +4,8 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable max-len */
 import puppeteer from 'puppeteer-core'
-import puppeteerLocal from 'puppeteer-extra'
-import puppeteerStealth from 'puppeteer-extra-plugin-stealth'
+// import puppeteerLocal from 'puppeteer-extra'
+// import puppeteerStealth from 'puppeteer-extra-plugin-stealth'
 import chromium from '@sparticuz/chromium'
 import getDimensions from './getDimensions'
 import getObject from './getScreenshotDetails'
@@ -16,11 +16,14 @@ const usePuppeteer = async (url: string) => {
   let version
   try {
     if (process.env.LOCAL === '1') {
-      version = 'puppeteer extra -- local'
-      puppeteerLocal.use(puppeteerStealth())
-      browser = await puppeteerLocal.launch({
+      version = 'puppeteer -- local'
+      // puppeteer.use(puppeteerStealth())
+      browser = await puppeteer.launch({
         headless: true,
+        executablePath:
+          '/Users/ayush.rodrigues/Documents/test-devs/floorplan/node_modules/chromium/lib/chromium/chrome-mac/Chromium.app/Contents/MacOS/Chromium',
         args: [
+          // ...chromiumLocal.args,
           // extensions from /Users/XYZ/Library/Application Support/Google/Chrome/Profile 1/Extensions/
           // or we can just host in the US and probably avoid these popups
           '--disable-extensions-except=./app/api/getProduct/puppeteer-extensions/cookieblocker,./app/api/getProduct/puppeteer-extensions/cookieblocker2',
@@ -46,7 +49,7 @@ const usePuppeteer = async (url: string) => {
 
     console.log('puppeteer launched ' + version)
   } catch (error) {
-    console.error('Failed to launch browser:', error.code)
+    console.error('Failed to launch browser:', error)
 
     throw error // or return; depending on your error handling strategy
   }
@@ -74,18 +77,18 @@ const usePuppeteer = async (url: string) => {
 
   await new Promise((resolve) => setTimeout(resolve, 500))
 
-  // if ((process.env.LOCAL = '1')) {
-  //   await page.screenshot({
-  //     path: './app/api/getProduct/screenshot.jpg',
-  //     optimizeForSpeed: true,
-  //     clip: {
-  //       x: 0,
-  //       y: 0,
-  //       height: 1000,
-  //       width: 1280,
-  //     },
-  //   })
-  // }
+  if ((process.env.LOCAL = '1')) {
+    await page.screenshot({
+      path: './app/api/getProduct/screenshot.jpg',
+      optimizeForSpeed: true,
+      clip: {
+        x: 0,
+        y: 0,
+        height: 1000,
+        width: 1280,
+      },
+    })
+  }
 
   async function extractText() {
     const extractedText = (
@@ -94,6 +97,7 @@ const usePuppeteer = async (url: string) => {
       )
     ).toLowerCase()
     const cleanedText = extractedText.replace(/[\n\t]/g, '')
+    console.log('cleaned text extracted')
     const contextLength = 150
     const searchTerms = [
       'dimensions',
@@ -137,6 +141,7 @@ const usePuppeteer = async (url: string) => {
       (snippet) => criteriaRegex.test(snippet) && !exclusionRegex.test(snippet)
     )
     const uniqueSnippets = [...new Set(filteredSnippets)]
+    console.log('unique snippets done ' + uniqueSnippets)
 
     const firstThreeSnippets = uniqueSnippets.slice(0, 3)
     return firstThreeSnippets

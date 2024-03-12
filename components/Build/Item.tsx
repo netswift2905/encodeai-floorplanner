@@ -57,7 +57,7 @@ export const Item = (props) => {
       outputItem = <Bed product={props.product} scale={props.scale} />
       break
     case 'plant':
-      outputItem = <Plant product={props.product} scale={props.scale}/>
+      outputItem = <Plant product={props.product} scale={props.scale} />
       break
     default:
       outputItem = <div className="bg-red-500 w-5 h-5"></div>
@@ -75,8 +75,10 @@ export function StageItem(props) {
 
   useEffect(() => {
     if (props.isSelected) {
+      const layer = trRef.current.getLayer()
       trRef.current.nodes([shapeRef.current])
-      trRef.current.getLayer().batchDraw()
+      layer.moveToTop() // Move the entire layer to the top
+      layer.batchDraw()
     }
     setIsOpen(props.isSelected)
   }, [props.isSelected])
@@ -84,6 +86,15 @@ export function StageItem(props) {
   const objectProperties = props.product
   return (
     <>
+      {props.isSelected && (
+        // console.log(props.index)
+        <Transformer
+          ref={trRef}
+          flipEnabled={false}
+          rotationSnaps={[0, 90, 180, 270]}
+          resizeEnabled={false}
+        />
+      )}
       <Group
         draggable
         onDragEnd={(e) => props.handleDragEnd?.(props.index, e)}
@@ -100,6 +111,7 @@ export function StageItem(props) {
           divProps={{
             style: {
               pointerEvents: 'none',
+              // zIndex: '-1',
             },
           }}
         >
@@ -173,15 +185,6 @@ export function StageItem(props) {
           }}
         />
       </Group>
-      {props.isSelected && (
-        // console.log(props.index)
-        <Transformer
-          ref={trRef}
-          flipEnabled={false}
-          rotationSnaps={[0, 90, 180, 270]}
-          resizeEnabled={false}
-        />
-      )}
     </>
   )
 }
