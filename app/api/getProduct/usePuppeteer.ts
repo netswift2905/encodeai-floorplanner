@@ -91,13 +91,25 @@ const usePuppeteer = async (url: string) => {
   // }
 
   async function extractText() {
-    const extractedText = (
-      await page.$$eval('*', (elements: Element[]) =>
-        elements.map((el) => el.textContent?.trim() ?? '').join(' ')
-      )
-    ).toLowerCase()
-    const cleanedText = extractedText.replace(/[\n\t]/g, '')
-    console.log('cleaned text extracted')
+    const extractedText = await page.evaluate(() => {
+      // Target more specific elements to reduce the workload
+      const elements = document.querySelectorAll(
+        'p, h1, h2, h3, h4, h5, h6, li, span, a'
+      ) // Adjust this selector based on your needs
+      let combinedText = ''
+      // Iterate through the elements and build the text string efficiently
+      elements.forEach((el) => {
+        const textContent = el.textContent?.trim() || ''
+        if (textContent) {
+          combinedText += textContent + ' ' // Add a space to separate text content
+        }
+      })
+
+      return combinedText.toLowerCase().replace(/[\n\t]/g, '') // Perform cleaning in the browser context
+    })
+
+    console.log('text extracted and cleaned')
+
     const contextLength = 150
     const searchTerms = [
       'dimensions',
@@ -111,7 +123,9 @@ const usePuppeteer = async (url: string) => {
     const occurrences = searchTerms.reduce(
       (accumulator: Array<{ term: string; index: number }>, term) => {
         let termIndex = -1
-        while ((termIndex = cleanedText.indexOf(term, termIndex + 1)) !== -1) {
+        while (
+          (termIndex = extractedText.indexOf(term, termIndex + 1)) !== -1
+        ) {
           accumulator.push({ term, index: termIndex })
         }
         return accumulator
@@ -125,10 +139,10 @@ const usePuppeteer = async (url: string) => {
     const snippets = occurrences.map(({ term, index }) => {
       const start = Math.max(0, index - contextLength)
       const end = Math.min(
-        cleanedText.length,
+        extractedText.length,
         index + term.length + contextLength
       )
-      return cleanedText.substring(start, end)
+      return extractedText.substring(start, end)
     })
     // console.log(snippets);
 
@@ -257,7 +271,7 @@ const usePuppeteer = async (url: string) => {
   // const initDetails = JSON.stringify(details);
   console.log(details)
 
-  // await browser.close()
+  await browser.close()
 
   // const details = {
   //   object: 'sofa',
